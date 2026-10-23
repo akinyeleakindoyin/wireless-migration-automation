@@ -1,8 +1,18 @@
+# Local caches and environment
 __pycache__/
 *.py[cod]
 .venv/
 venv/
+.env
+.env.*
+# Credentials and private AP inventories
+ap_list.csv
+ap_inventory.csv
+inventory.csv
+inventory*.csv
+*.pem
+*.key
+# Operational data and output
 logs/
 *.log
-.env
 .DS_Store
