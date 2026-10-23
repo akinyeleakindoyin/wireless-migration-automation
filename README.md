@@ -1,17 +1,15 @@
 # Wireless Controller Migration — Practical Cisco AP Automation Scripts
 
 **Author:** Abraham Akindoyin  
-**Status:** Historical engineering scripts adapted for public review. This is an educational/engineering reference, **not** a polished or universally supported migration tool.
+**Scope:** Practical Python/Netmiko utilities developed in response to a wireless migration issue and later adapted for sharing. These are **not** a turnkey or universally supported migration tool.
 
-## Background: learning from the Georgia remote site
+## Background
 
-During initial wireless-controller migration work at three sites, including a remote site in Georgia, AP software image transfers took approximately **90 minutes per AP**, by the author's recollection. The site had a nominal **100 Mbps up/down circuit**. The experience raised an operational challenge: repeating manual AP preparation and verification at additional remote sites could put maintenance windows at risk.
+These scripts were developed following an operational issue encountered during a migration from an **AireOS-based wireless controller to a Cisco Catalyst wireless controller**. While migrating a site on the U.S. East Coast with a nominal **100 Mbps symmetric (upload/download) WAN circuit**, AP image downloads were taking approximately **90 minutes per AP**, based on the author's recollection. The experience highlighted the difficulty of preparing and validating multiple APs within a maintenance window when similar work had to be repeated across sites.
 
-Circuit rate or geographic distance alone does **not** prove the reason for the delays. Latency, transfer protocol, concurrency, image size, traffic contention, and server placement were not individually benchmarked.
+The circuit's advertised bandwidth and the site's location do **not** establish the cause of the slow transfers. Transfer protocol behavior, latency, image size, server placement and capacity, concurrent downloads, and competing traffic were not individually benchmarked.
 
-Following that experience, I developed a small collection of Python/Netmiko scripts to simplify **image staging, parallelized image-integrity output collection, controlled restarts, and controller reassignment**. The goal was repeatability and less manual effort, not inventing wireless predownload technology. Established Cisco workflows and tools, including WLAN Poller, address related needs; these scripts reflect my specific deployment workflow and constraints.
-
-An external wireless CCIE participated in only the initial **three** sites, including Georgia. His firsthand observations of those sites are separate from any later review of these scripts or the subsequent migrations. My manager separately described the broader **13-building overnight migration** in a performance review, but this repository does **not** quantify speedup or prove these scripts alone produced that outcome.
+In response, I developed Python/Netmiko scripts to make common migration tasks more repeatable: **model-aware image staging, concurrent image-integrity output collection, optional AP restarts, and controller reassignment**. The scripts combine existing Cisco CLI capabilities into a practical workflow; they are not intended to reinvent image predownload or replace established Cisco tooling.
 
 ## Practical workflow and file map
 
@@ -71,11 +69,9 @@ python -m unittest discover -s tests -v
 6. Prompt-based reads and time-based collection can miss slow/truncated outputs; operational success cannot be inferred from a command returning without raising an exception.
 7. Logs could contain device output and internal details; never commit real operational logs or credentials to this repository.
 
-## Relevance to ongoing engineering development
+## Design intent
 
-The contribution I wish to explore further is the **repeatable engineering workflow**: use observed migration constraints to make multi-device infrastructure changes easier to stage, inspect and verify, then improve the tooling through explicit evidence and testing. This is complementary to my publicly documented multi-plane network fault-isolation work, while remaining a separate project.
-
-See [REVIEW_FOR_REZA.md](REVIEW_FOR_REZA.md) for a bounded technical-review context note. Reviewers are free to critique the workflow and are not being asked to confirm work they did not personally observe.
+These scripts illustrate a simple operational approach: stage software ahead of a cutover, collect image-integrity output across multiple APs, and make controller reassignment more consistent. They remain separate utilities with manual validation steps, not a fully automated migration or verification system.
 
 ## Intellectual property and safety
 
